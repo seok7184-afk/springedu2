@@ -1,0 +1,32 @@
+@charset "UTF-8";
+
+@font-face {
+    font-family: 'CookieRunRegular';
+    src: url('../fonts/CookieRun-Regular.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'CookieRunBold';
+    src: url('../fonts/CookieRun-Bold.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'CookieRunBlack';
+    src: url('../fonts/CookieRun-Black.otf') format('opentype');
+}
+
+* {
+    font-family: 'CookieRunRegular', sans-serif;
+    box-sizing: border-box;
+}
+
+body {
+    text-align: center;
+}
+h1 {
+    text-shadow: 2px 2px 5px lime;
+    font-size: 3em;
+}
+textarea {
+    margin: 10px;
+}

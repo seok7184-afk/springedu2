@@ -9,6 +9,8 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDate;
+
 @Entity
 @Getter
 @Setter
@@ -32,7 +34,7 @@ public class Visitor {
     // Column
     @CreationTimestamp
     @Column(name="writedate", nullable = false, updatable = false)
-    private String writeDate;
+    private LocalDate writeDate;
 
     // 방명록 내용: memo
     @NotBlank(message = "입력해 주세요.")
