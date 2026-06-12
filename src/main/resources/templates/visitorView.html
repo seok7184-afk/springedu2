@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>방명록 목록</title>
+    <link rel="stylesheet" href="/css/visitor.css">
+    <style>
+        .title {
+            background-color: lightpink;
+            color: white;
+            text-shadow: none;
+        }
+
+        table {
+            margin: 5px auto;
+            border-radius: 20px;
+            background-color: #fff;
+        }
+        tb {
+            border-bottom: 1px solid black;
+            padding: 10px;
+            text-align: left;
+        }
+        tr:hover {
+            background-color: lightpink;
+        }
+        td:nth-of-type(1) {width: 100px;}
+        td:nth-of-type(2) {width: 150px;}
+        div {
+            margin: 10px auto;
+            padding: 50px;
+            width: 800px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="title">방명록 리스트</h1>
+    <hr>
+    <div>
+        <table th:if="${vList}">
+            <tr th:each="vo : ${vList}">
+                <td>[[${vo.name}]]</td>
+                <td>[[${vo.writeDate}]]</td>
+                <td>[[${vo.memo}]]</td>
+                <td>
+                    <form method="post" th:action="@{/vdelete}"
+                          onsubmit="return confirm('삭제하시겠습니까?')">
+                        <input type="hidden" name="id" value="${vo.id}">
+                        <button type="submit" class="icon-button"></button>
+                        <img src="/img/delete.png" width="30" alt="삭제">
+                    </form>
+                </td>
+                <td>
+                    <img src="/img/edit.png" width="30" alt="수정"
+                         th:onclick="|displayUpdateForm(${vo.id})|"
+                    >
+                </td>
+            </tr>
+        </table>
+
+        <h3 th:if="${msg}" th:text="${msg}"></h3>
+        <hr>
+        <a href="/visitorMain.html">
+            <button>메인페이지로 돌아가기</button>
+        </a>
+    </div>
+</body>
+</html>
