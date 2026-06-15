@@ -5,12 +5,15 @@ import com.example.springedu2.repository.VisitorRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -77,6 +80,18 @@ public class VisitorController {
         visitorRepository.save(visitor); // entity type
 
         return "redirect:/vlist";
+    }
+
+    // /one 방명록 id 조회 : Rest 호출 결과 : json
+    // return 값이 Visitor 객체인데 이것은 json으로 변경되어 다운로드됨
+    // return 값이 ResponseEntity<Visitor> 일 때는 data는 json으로 상태코드 리턴가능
+    @GetMapping(value = "/one", produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public ResponseEntity<Visitor> one(@RequestParam Integer id) {
+        return visitorRepository.findById(Long.valueOf(id))
+                .map(ResponseEntity::ok)
+                .orElseGet(()-> ResponseEntity.notFound().build());
+                // 못찾으면 nill 대신해 404 코드를 객체로 바꿔서(.build()) 리턴
     }
 
 }
