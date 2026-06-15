@@ -2,6 +2,7 @@ package com.example.springedu2.controller;
 
 import com.example.springedu2.entity.Visitor;
 import com.example.springedu2.repository.VisitorRepository;
+import jakarta.servlet.http.PushBuilder;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.config.annotation.RedirectViewControllerRegistration;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -92,6 +95,37 @@ public class VisitorController {
                 .map(ResponseEntity::ok)
                 .orElseGet(()-> ResponseEntity.notFound().build());
                 // 못찾으면 nill 대신해 404 코드를 객체로 바꿔서(.build()) 리턴
+    }
+
+    // /vupdate 수정
+//    @PostMapping("/vupdate")
+//    public String vupdate(@Valid Visitor visitor,
+//                          BindingResult bindingResult,
+//                          Model model, RedirectAttributes redirectAttributes, PushBuilder pushBuilder) {
+//        if(bindingResult.hasErrors()) {
+//            redirectAttributes.addFlashAttribute("msg", "수정할 이름과 내용을 모두 입력하세요");
+//            return "redirect:/vlist";
+//        }
+//        // 수정
+//        visitorRepository.save(visitor);
+//        return "redirect:/vlist";
+//    }
+
+    @PostMapping("/vupdate")
+    @Transactional
+    public String vupdate(@Valid Visitor visitor,
+                          BindingResult bindingResult,
+                          Model model, RedirectAttributes redirectAttributes) {
+        if(bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("msg",
+                    "수정할 이름과 내용을 모두 입력하세요");
+            return "redirect:/vlist";
+        }
+        Visitor entity = visitorRepository.findById(Long.valueOf(visitor.getId()))
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 방명록입니다"));
+        entity.setName(visitor.getName());
+        entity.setMemo(visitor.getMemo());
+        return "redirect:/vlist";
     }
 
 }
